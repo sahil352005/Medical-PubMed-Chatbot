@@ -1,0 +1,8 @@
+streamlit
+langchain
+langchain_mistralai
+faiss-cpu
+biopython
+python-dotenv
+pandas
+plotly
