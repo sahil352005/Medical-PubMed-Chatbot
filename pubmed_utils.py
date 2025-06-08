@@ -13,6 +13,23 @@ def extract_pmids_from_urls(urls: List[str]) -> List[str]:
     pmids = [match.group(1) for url in urls if (match := pmid_pattern.search(url))]
     return pmids
 
+def extract_pmids_from_text(text: str) -> List[str]:
+    """Extract PMIDs from text content (e.g., saved PubMed results)"""
+    # Pattern for PMID in various formats
+    patterns = [
+        r"PMID: (\d+)",  # Standard PMID format
+        r"PMID-(\d+)",   # Alternative format
+        r"\[PMID: (\d+)\]",  # PMID in brackets
+        r"pubmed/(\d+)",  # URL format
+        r"(\d{8})"       # Just the number (8 digits)
+    ]
+    
+    pmids = set()
+    for pattern in patterns:
+        matches = re.findall(pattern, text)
+        pmids.update(matches)
+    
+    return list(pmids)
 
 def fetch_pubmed_articles(pmids: List[str]) -> List[Dict]:
     """Fetch PubMed articles using PMIDs and return metadata"""
@@ -34,7 +51,6 @@ def fetch_pubmed_articles(pmids: List[str]) -> List[Dict]:
             articles.append(article)
         return articles
 
-
 def get_articles_from_pmids_or_urls(inputs: List[str]) -> List[Dict]:
     """Process user inputs (PMIDs or URLs) and fetch article data"""
     # Separate valid PMIDs and extract PMIDs from URLs
@@ -47,7 +63,6 @@ def get_articles_from_pmids_or_urls(inputs: List[str]) -> List[Dict]:
         raise ValueError("No valid PMIDs or PubMed URLs provided.")
 
     return fetch_pubmed_articles(all_pmids)
-
 
 def search_pubmed_by_keyword(keyword: str, max_results: int = 10) -> List[str]:
     """Search PubMed using a keyword and return a list of PMIDs"""
