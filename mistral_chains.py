@@ -48,7 +48,7 @@ Text:
 
 def run_per_article_summary(articles: list[dict]) -> str:
     summaries = []
-    for i, art in enumerate(articles, 1):
+    for i, art in enumerate(articles, 1):  # Start numbering from 1
         prompt = f"""
 You are a medical reviewer. Generate a ~100-word structured summary for the article below.
 
@@ -69,6 +69,7 @@ Abstract: {art['abstract']}
         summaries.append(f"### 📝 Article {i}: {art['title']}\n{result.strip()}")
 
     return "\n\n".join(summaries)
+
 
 def run_conclusion(article_text: str) -> str:
     prompt = f"""
