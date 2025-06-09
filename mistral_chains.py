@@ -3,7 +3,6 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 import os
 from dotenv import load_dotenv
-from memory_manager import get_mistral_with_memory
 
 load_dotenv()
 mistral_api_key = os.getenv("MISTRAL_API_KEY")
@@ -55,10 +54,10 @@ You are a medical reviewer. Generate a ~100-word structured summary for the arti
 
 Use the following format:
 
-- **Background:** Brief context of the study.
-- **Methodology:** Describe the study design or analysis method.
-- **Key Findings:** Summarize the main results.
-- **Conclusion:** Clinical or scientific implications.
+- *Background:* Brief context of the study.
+- *Methodology:* Describe the study design or analysis method.
+- *Key Findings:* Summarize the main results.
+- *Conclusion:* Clinical or scientific implications.
 
 Article:
 Title: {art['title']}
@@ -70,7 +69,6 @@ Abstract: {art['abstract']}
         summaries.append(f"### 📝 Article {i}: {art['title']}\n{result.strip()}")
 
     return "\n\n".join(summaries)
-
 
 def run_conclusion(article_text: str) -> str:
     prompt = f"""
@@ -115,19 +113,22 @@ def run_article_metadata(articles: list[dict]) -> str:
     metadata_str = ""
     for art in articles:
         metadata_str += (
-            f"**PMID:** {art.get('pmid', '')}\n"
-            f"**Title:** {art.get('title', '')}\n"
-            f"**Authors:** {', '.join(art.get('authors', []))}\n"
-            f"**Journal:** {art.get('journal', '')}\n"
-            f"**Date:** {art.get('date', '')}\n"
-            f"**Abstract:** {art.get('abstract', '')[:300]}...\n\n"
+            f"*PMID:* {art.get('pmid', '')}\n"
+            f"*Title:* {art.get('title', '')}\n"
+            f"*Authors:* {', '.join(art.get('authors', []))}\n"
+            f"*Journal:* {art.get('journal', '')}\n"
+            f"*Date:* {art.get('date', '')}\n"
+            f"*Abstract:* {art.get('abstract', '')[:300]}...\n\n"
         )
     return metadata_str
 
 # --- Master Handler Function ---
 
-def answer_user_query(user_query: str, articles: list[dict], articles_text: str) -> str:
-    tasks = classify_query(user_query)
+def answer_user_query(user_query: str, articles: list[dict], articles_text: str, forced_tasks: list[str] = None) -> str:
+    if forced_tasks is not None:
+        tasks = forced_tasks
+    else:
+        tasks = classify_query(user_query)
 
     if not tasks:
         return "❌ Couldn't classify your query properly. Please rephrase."

@@ -3,7 +3,7 @@ from typing import List, Dict
 from Bio import Entrez, Medline
 
 # Set your email (required by Entrez)
-Entrez.email = "sohambagayatkar7@gmail.com"  # ✅ Use your real email
+Entrez.email = "sohambagayatkar7@gmail.com"  # ✅ Replace with your real email if needed
 
 # ----------- Utility Functions -----------
 
@@ -15,13 +15,13 @@ def extract_pmids_from_urls(urls: List[str]) -> List[str]:
 
 def extract_pmids_from_text(text: str) -> List[str]:
     """Extract PMIDs from text content (e.g., saved PubMed results)"""
-    # Pattern for PMID in various formats
     patterns = [
-        r"PMID: (\d+)",  # Standard PMID format
-        r"PMID-(\d+)",   # Alternative format
-        r"\[PMID: (\d+)\]",  # PMID in brackets
-        r"pubmed/(\d+)",  # URL format
-        r"(\d{8})"       # Just the number (8 digits)
+        r"PMID: (\d+)",
+        r"PMID-(\d+)",
+        r"\[PMID: (\d+)\]",
+        r"pubmed/(\d+)",
+        r"https?://pubmed\.ncbi\.nlm\.nih\.gov/(\d+)/?",
+        r"\b(\d{8})\b"  # Match 8-digit standalone PMIDs
     ]
     
     pmids = set()
@@ -33,34 +33,38 @@ def extract_pmids_from_text(text: str) -> List[str]:
 
 def fetch_pubmed_articles(pmids: List[str]) -> List[Dict]:
     """Fetch PubMed articles using PMIDs and return metadata"""
-    if len(pmids) > 10:
-        raise ValueError("You can only process up to 10 articles at a time.")
+    if not pmids:
+        raise ValueError("No PMIDs provided.")
+    
+    pmids = pmids[:10]  # Ensure only 10 are processed
 
     with Entrez.efetch(db="pubmed", id=",".join(pmids), rettype="medline", retmode="text") as handle:
         records = Medline.parse(handle)
         articles = []
         for record in records:
+            pmid = record.get("PMID", "")
             article = {
-                "pmid": record.get("PMID", ""),
-                "title": record.get("TI", ""),
-                "authors": record.get("AU", []),
-                "journal": record.get("JT", ""),
-                "abstract": record.get("AB", ""),
-                "date": record.get("DP", ""),
+                "pmid": pmid,
+                "title": record.get("TI", "No title available"),
+                "authors": record.get("AU", ["No authors listed"]),
+                "journal": record.get("JT", "No journal"),
+                "abstract": record.get("AB", "No abstract available"),
+                "date": record.get("DP", "No date"),
+                "url": f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/" if pmid else ""
             }
             articles.append(article)
         return articles
 
 def get_articles_from_pmids_or_urls(inputs: List[str]) -> List[Dict]:
     """Process user inputs (PMIDs or URLs) and fetch article data"""
-    # Separate valid PMIDs and extract PMIDs from URLs
     pmids = [x.strip() for x in inputs if x.strip().isdigit()]
     urls = [x.strip() for x in inputs if "pubmed.ncbi.nlm.nih.gov" in x]
     pmids_from_urls = extract_pmids_from_urls(urls)
-    all_pmids = list(set(pmids + pmids_from_urls))[:10]  # max 10 articles
+    
+    all_pmids = list(set(pmids + pmids_from_urls))[:10]
 
     if not all_pmids:
-        raise ValueError("No valid PMIDs or PubMed URLs provided.")
+        raise ValueError("No valid PMIDs or PubMed URLs found in input.")
 
     return fetch_pubmed_articles(all_pmids)
 
@@ -69,4 +73,4 @@ def search_pubmed_by_keyword(keyword: str, max_results: int = 10) -> List[str]:
     handle = Entrez.esearch(db="pubmed", term=keyword, retmax=max_results)
     record = Entrez.read(handle)
     handle.close()
-    return record["IdList"]
+    return record.get("IdList", [])

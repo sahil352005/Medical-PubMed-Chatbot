@@ -1,6 +1,6 @@
 import streamlit as st
 from pubmed_utils import fetch_pubmed_articles, extract_pmids_from_text
-from mistral_chains import answer_user_query
+from mistral_chains import answer_user_query  # updated import
 import pandas as pd
 
 st.set_page_config(page_title="Evidence Analysis", layout="wide")
@@ -15,7 +15,7 @@ for key in ['articles', 'analysis_complete', 'metadata_df', 'summaries',
 # Function to process articles
 def process_articles(pmids):
     if len(pmids) > 10:
-        st.warning("⚠️ Only the first 10 articles will be processed.")
+        st.warning("⚠ Only the first 10 articles will be processed.")
         pmids = pmids[:10]
     
     with st.spinner("Processing articles..."):
@@ -29,12 +29,16 @@ def process_articles(pmids):
         # Store articles in session state
         st.session_state.articles = articles
         
-        # Generate overall evidence summary
+        # Combine abstracts for multi-article prompts
+        combined_abstracts = "".join([art['abstract'] for art in articles])
+        
+        # Generate overall evidence summary (only overall_summary task)
         if st.session_state.overall_summary is None:
             st.session_state.overall_summary = answer_user_query(
                 "Generate a 300-word evidence-based summary synthesizing findings across all articles",
                 articles,
-                ""
+                combined_abstracts,
+                forced_tasks=["overall_summary"]
             )
         
         # Metadata Table
@@ -51,31 +55,41 @@ def process_articles(pmids):
                 })
             st.session_state.metadata_df = pd.DataFrame(metadata_data)
         
-        # Individual Article Summaries
+        # Individual Article Summaries (only per_article_summary task)
         if not st.session_state.summaries:
             summaries = {}
             for i, art in enumerate(articles, 1):
                 summaries[i] = answer_user_query(
-                    f"Generate a 100-word structured summary for this article including Background, Methodology, Key Findings, and Conclusion",
-                    [art],
-                    ""
-                )
-            st.session_state.summaries = summaries
+                f"Generate a 100-word structured summary for this article including Background, Methodology, Key Findings, and Conclusion",
+                [art],
+                art['abstract'],
+                forced_tasks=["per_article_summary"]
+            )
+        st.session_state.summaries = summaries
+
+    # Store in articles_data for protocol use
+    if "articles_data" not in st.session_state:
+        st.session_state.articles_data = {}
+
+    st.session_state.articles_data["summaries"] = summaries
+
         
-        # Comparative Analysis
-        if st.session_state.comparison is None:
-            st.session_state.comparison = answer_user_query(
-                "Create a comparative analysis table with these parameters: Treatment, Mechanism of Action, Indication, Onset of Action, Healing Rate, Bleeding Risk, CYP Interaction, GI Side Effects, Trial Design, Population",
-                articles,
-                ""
+        # Comparative Analysis (only comparison task)
+    if st.session_state.comparison is None:
+        st.session_state.comparison = answer_user_query(
+             "Create a comparative analysis table of the 3 with these parameters: Treatment, Mechanism of Action, Indication, Onset of Action, Healing Rate, Bleeding Risk, CYP Interaction, GI Side Effects, Trial Design, Population",
+             articles,
+            combined_abstracts,
+            forced_tasks=["comparison"]
             )
         
-        # Unified Clinical Conclusion
+        # Unified Clinical Conclusion (only conclusion task)
         if st.session_state.conclusion is None:
             st.session_state.conclusion = answer_user_query(
                 "Generate an overall evidence-based conclusion summarizing comparative advantages and clinical guidance",
                 articles,
-                ""
+                combined_abstracts,
+                forced_tasks=["conclusion"]
             )
         
         st.session_state.analysis_complete = True
@@ -98,8 +112,7 @@ with col1:
 # Column 2: Text Input
 with col2:
     st.markdown("### 📝 Paste Text")
-    st.markdown("""
-    You can paste:
+    st.markdown("""You can paste:
     - Full PubMed search results
     - List of PMIDs
     - PubMed URLs
@@ -140,7 +153,6 @@ if st.session_state.analysis_complete and st.session_state.articles:
         st.markdown("### Metadata Table")
         st.dataframe(st.session_state.metadata_df, use_container_width=True)
         
-        # Add download button for metadata
         st.download_button(
             label="📥 Download Metadata",
             data=st.session_state.metadata_df.to_csv(index=False),
@@ -160,4 +172,4 @@ if st.session_state.analysis_complete and st.session_state.articles:
     
     with analysis_tab5:
         st.markdown("### Unified Clinical Conclusion")
-        st.markdown(st.session_state.conclusion) 
+        st.markdown(st.session_state.conclusion)

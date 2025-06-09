@@ -42,4 +42,3 @@ def query_vectorstore(vectorstore: FAISS, user_query: str, k: int = 3) -> List[D
     Retrieve top k relevant documents from vector store for user query
     """
     return vectorstore.similarity_search(user_query, k=k)
-

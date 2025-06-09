@@ -16,7 +16,7 @@ st.title("📋 Clinical Documents")
 
 # Check if articles are available in session state
 if "articles" not in st.session_state or st.session_state.articles is None:
-    st.warning("⚠️ Please process articles in the Evidence Analysis page first.")
+    st.warning("⚠ Please process articles in the Evidence Analysis page first.")
     st.stop()
 
 articles = st.session_state.articles
@@ -208,5 +208,5 @@ def main():
             href = get_download_link(doc, "clinical_protocol.docx")
             st.markdown(f'<a href="{href}" download="clinical_protocol.docx">Download Clinical Protocol</a>', unsafe_allow_html=True)
 
-if __name__ == "__main__":
-    main() 
+if __name__== "_main_":
+    main()
