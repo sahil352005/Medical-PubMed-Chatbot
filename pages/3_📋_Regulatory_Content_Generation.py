@@ -98,16 +98,6 @@ with doc_tab1:
         </style>
     """, unsafe_allow_html=True)
 
-    st.markdown("<span style='font-size:1.2rem;font-weight:600;'>ICH M11 Introduction</span>", unsafe_allow_html=True)
-    st.markdown(f"<div style='font-family:Segoe UI,Arial,sans-serif;font-size:1.05rem;color:#222;margin-bottom:18px;'>{st.session_state.protocol_intro}</div>", unsafe_allow_html=True)
-
-    st.download_button(
-        label="📥 Download Protocol Introduction",
-        data=f"# Clinical Trial Protocol Introduction\n\n{st.session_state.protocol_intro}",
-        file_name="protocol_introduction.md",
-        mime="text/markdown"
-    )
-
     st.markdown("---")
     st.markdown("<span style='font-size:1.2rem;font-weight:600;'>📄 Full Clinical Protocol Document</span>", unsafe_allow_html=True)
 
