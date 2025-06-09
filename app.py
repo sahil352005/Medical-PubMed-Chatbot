@@ -31,16 +31,10 @@ The tool will generate:
 - Comparative analysis
 - Clinical conclusions
 
-### Step 4: Visualize Data
-Visit the "Article Analytics & Reports" page to see:
-- Adverse event rates
-- Time to symptom relief
-- Drug interaction risks
-
-### Step 5: Generate Regulatory Content
+### Step 4: Generate Regulatory Content
 The "Regulatory Content Generation" page provides:
 - Clinical Trial Protocol Introduction (ICH M11 format)
-- Clinical Study Report Discussion (TransCelerate format) **>> Pending**
+- Clinical Study Report Discussion (TransCelerate format)
 
 ## Getting Started
 Click on "Article Summaries" in the sidebar to begin!
