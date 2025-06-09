@@ -11,8 +11,11 @@ from docx.shared import Pt, Inches
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 import io
 
-st.set_page_config(page_title="Clinical Documents", layout="wide")
-st.title("📋 Clinical Documents")
+st.set_page_config(page_title="Regulatory Content Generation", layout="wide")
+
+st.image("https://s3ktech.ai/wp-content/uploads/2025/03/S3Ktech-Logo.png", width=140)
+
+st.title("📋 Regulatory Content Generation")
 
 # Check if articles are available in session state
 if "articles" not in st.session_state or st.session_state.articles is None:
@@ -208,5 +211,5 @@ def main():
             href = get_download_link(doc, "clinical_protocol.docx")
             st.markdown(f'<a href="{href}" download="clinical_protocol.docx">Download Clinical Protocol</a>', unsafe_allow_html=True)
 
-if __name__== "_main_":
+if __name__ == "__main__":
     main()

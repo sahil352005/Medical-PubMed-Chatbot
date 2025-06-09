@@ -1,15 +1,16 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Medical PubMed Analysis",
+    page_title="Medical Research Article Summaries & Regulatory Content Generation",
     page_icon="🩺",
     layout="wide"
 )
 
-st.title("🩺 Medical PubMed Analysis Tool")
+st.image("https://s3ktech.ai/wp-content/uploads/2025/03/S3Ktech-Logo.png", width=140)
+
+st.title("🩺 Medical Research Article Summaries & Regulatory Content Generation")
 
 st.markdown("""
-## Welcome to the Medical PubMed Analysis Tool
 
 This tool helps you analyze medical research articles from PubMed in a structured way. Follow these steps:
 
@@ -19,7 +20,7 @@ This tool helps you analyze medical research articles from PubMed in a structure
 3. Save the results as a text file (use the 'Save' button on PubMed)
 
 ### Step 2: Upload and Process
-1. Go to the "Evidence Analysis" page
+1. Go to the "Article Summaries" page
 2. Upload your saved PubMed results
 3. Click "Process Articles" to analyze the content
 
@@ -27,24 +28,22 @@ This tool helps you analyze medical research articles from PubMed in a structure
 The tool will generate:
 - Overall evidence summary
 - Metadata table
-- Individual article summaries
 - Comparative analysis
 - Clinical conclusions
 
 ### Step 4: Visualize Data
-Visit the "Data Visualization" page to see:
-- Healing rates comparison
+Visit the "Article Analytics & Reports" page to see:
 - Adverse event rates
 - Time to symptom relief
 - Drug interaction risks
 
-### Step 5: Generate Clinical Documents
-The "Clinical Documents" page provides:
+### Step 5: Generate Regulatory Content
+The "Regulatory Content Generation" page provides:
 - Clinical Trial Protocol Introduction (ICH M11 format)
-- Clinical Study Report Discussion (TransCelerate format)
+- Clinical Study Report Discussion (TransCelerate format) **>> Pending**
 
 ## Getting Started
-Click on "Evidence Analysis" in the sidebar to begin!
+Click on "Article Summaries" in the sidebar to begin!
 """)
 
 # Add some styling

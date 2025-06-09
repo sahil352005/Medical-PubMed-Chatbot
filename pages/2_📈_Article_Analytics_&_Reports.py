@@ -3,8 +3,11 @@ import plotly.express as px
 import pandas as pd
 import re
 
-st.set_page_config(page_title="Data Visualization", layout="wide")
-st.title("📈 Data Visualization")
+st.set_page_config(page_title="Article Analytics & Reports", layout="wide")
+
+st.image("https://s3ktech.ai/wp-content/uploads/2025/03/S3Ktech-Logo.png", width=140)
+
+st.title("📈 Article Analytics & Reports")
 
 # Check if articles are available
 if 'articles' not in st.session_state or not st.session_state.articles:

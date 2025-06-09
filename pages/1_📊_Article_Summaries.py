@@ -3,8 +3,11 @@ from pubmed_utils import fetch_pubmed_articles, extract_pmids_from_text
 from mistral_chains import answer_user_query  # updated import
 import pandas as pd
 
-st.set_page_config(page_title="Evidence Analysis", layout="wide")
-st.title("📊 Evidence Analysis")
+st.set_page_config(page_title="Article Summaries", layout="wide")
+
+st.image("https://s3ktech.ai/wp-content/uploads/2025/03/S3Ktech-Logo.png", width=140)
+
+st.title("📊 Article Summaries")
 
 # Initialize session state variables
 for key in ['articles', 'analysis_complete', 'metadata_df', 'summaries', 
@@ -112,12 +115,13 @@ with col1:
 # Column 2: Text Input
 with col2:
     st.markdown("### 📝 Paste Text")
-    st.markdown("""You can paste:
-    - Full PubMed search results
-    - List of PMIDs
-    - PubMed URLs
-    - Any text containing PMIDs
-    """)
+    st.markdown("""
+**You can paste:**
+- Full PubMed search results  
+- List of PMIDs  
+- PubMed URLs  
+- Any text containing PMIDs
+""")
     
     text_input = st.text_area("Paste your text here", height=200)
     
