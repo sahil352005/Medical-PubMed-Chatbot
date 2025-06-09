@@ -97,8 +97,7 @@ with doc_tab1:
         }
         </style>
     """, unsafe_allow_html=True)
-
-    st.markdown("---")
+    
     st.markdown("<span style='font-size:1.2rem;font-weight:600;'>📄 Full Clinical Protocol Document</span>", unsafe_allow_html=True)
 
     if st.button("Generate Full Clinical Protocol Document"):
