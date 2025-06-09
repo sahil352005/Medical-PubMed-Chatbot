@@ -143,7 +143,7 @@ def answer_user_query(user_query: str, articles: list[dict], articles_text: str,
         responses.append("### 🔵  Article Metadata\n" + run_article_metadata(articles))
 
     if "per_article_summary" in tasks:
-        responses.append("### 🟢  Per-Article Summary\n" + run_per_article_summary(articles))
+        responses.append("### 🟢  Individual-Article Summary\n" + run_per_article_summary(articles))
 
 
     if "comparison" in tasks:
