@@ -10,7 +10,7 @@ Across all three articles, the safety profiles of PPIs and vonoprazan are genera
 3. Consistency of Findings
 There is consistency in the findings across multiple randomized controlled trials that support the efficacy and safety of acid suppression therapies. Vonoprazan consistently ranks high in network meta-analyses for both efficacy and safety, with PPIs also performing reliably. This consistency enhances confidence in integrating these treatments into routine care.
 
-#### 4. Study Limitations
+4. Study Limitations
 While the network meta-analyses provide strong comparative insights, heterogeneity in study design, treatment duration, and patient populations may limit direct generalizability. Furthermore, long-term safety data for vonoprazan remains limited.
 
 5. Implications for Future Clinical Trials
