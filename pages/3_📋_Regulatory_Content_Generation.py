@@ -1,19 +1,19 @@
 HARDCODED_CSR_DISCUSSION = """
-### Clinical Study Report – Discussion (TransCelerate Format)
+Clinical Study Report – Discussion (TransCelerate Format)
 
-#### 1. Interpretation of Efficacy Outcomes
+1. Interpretation of Efficacy Outcomes
 The studies consistently indicate that vonoprazan demonstrates superior or comparable efficacy to traditional proton pump inhibitors (PPIs) in treating peptic and duodenal ulcers. Meng et al. (2023) further supports that PPIs are more effective than H2 receptor antagonists in initial treatment settings. Ai et al. (2024) show that co-administration of PPIs with clopidogrel in post-PCI patients is generally effective without significant compromise in cardiovascular outcomes.
 
-#### 2. Interpretation of Safety Outcomes
+2. Interpretation of Safety Outcomes
 Across all three articles, the safety profiles of PPIs and vonoprazan are generally well-tolerated, with low rates of serious adverse events. Vonoprazan showed a favorable safety profile, potentially offering a safer alternative to long-term PPI use. The combination therapy with clopidogrel also did not significantly increase bleeding risk, although individual patient factors should be considered.
 
-#### 3. Consistency of Findings
+3. Consistency of Findings
 There is consistency in the findings across multiple randomized controlled trials that support the efficacy and safety of acid suppression therapies. Vonoprazan consistently ranks high in network meta-analyses for both efficacy and safety, with PPIs also performing reliably. This consistency enhances confidence in integrating these treatments into routine care.
 
 #### 4. Study Limitations
 While the network meta-analyses provide strong comparative insights, heterogeneity in study design, treatment duration, and patient populations may limit direct generalizability. Furthermore, long-term safety data for vonoprazan remains limited.
 
-#### 5. Implications for Future Clinical Trials
+5. Implications for Future Clinical Trials
 Future trials should focus on head-to-head comparisons in diverse populations, with extended follow-up to evaluate long-term outcomes, particularly for vonoprazan. Evaluating outcomes in high-risk subgroups, such as patients on dual antiplatelet therapy, is also warranted.
 """
 
