@@ -66,7 +66,7 @@ Abstract: {art['abstract']}
 """
         response = llm.invoke(prompt)
         result = response.content if hasattr(response, "content") else response
-        summaries.append(f"### 📝 Article {i}: {art['title']}\n{result.strip()}")
+        summaries.append(f"### 📝 {art['title']}\n{result.strip()}")
 
     return "\n\n".join(summaries)
 
