@@ -35,7 +35,7 @@ To run this tool locally, follow these concise steps:
 
 1.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/sahil352005/medical-research-summarizer.git
+    git clone https://github.com/sahil352005/Medical-PubMed-Chatbot.git
     cd medical-research-summarizer
     ```
 2.  **Set Up Environment:** Create and activate a virtual environment.
