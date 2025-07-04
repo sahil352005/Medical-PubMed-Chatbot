@@ -225,16 +225,75 @@
 import streamlit as st
 from mistral_chains import answer_user_query
 from docx import Document
-from docx.shared import Pt
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 import base64
 import io
 
-st.set_page_config(page_title="Regulatory Content Generation", layout="wide")
+st.set_page_config(page_title="Clinical Protocol Generator", layout="wide")
 
-st.image("https://s3ktech.ai/wp-content/uploads/2025/03/S3Ktech-Logo.png", width=140)
+# --- Custom CSS ---
+st.markdown("""
+    <style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f7f9fc;
+    }
+    .main-title {
+        text-align: center;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #14375a;
+        margin-bottom: 10px;
+    }
+    .section-title {
+        font-size: 1.5rem;
+        color: #343a40;
+        font-weight: 600;
+        margin: 20px 0 10px;
+    }
+    .preview-box {
+        background-color: #ffffff;
+        border-radius: 12px;
+        padding: 20px;
+        border: 1px solid #dee2e6;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.06);
+        max-height: 400px;
+        overflow-y: auto;
+        margin-bottom: 20px;
+        line-height: 1.7;
+        color: #212529;
+    }
+    .stButton>button {
+        background-color: #2563eb;
+        color: white;
+        border-radius: 8px;
+        padding: 0.6em 1.2em;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
+    }
+    .stButton>button:hover {
+        background-color: #1d4ed8;
+        transition: 0.3s ease-in-out;
+    }
+    .download-link {
+        font-weight: 600;
+        color: #2563eb;
+        font-size: 1.05rem;
+    }
+    .logo {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 140px;
+    }
+    </style>
+""", unsafe_allow_html=True)
 
-st.title("📋 Regulatory Content Generation")
+# --- Page Elements ---
+st.image("https://s3ktech.ai/wp-content/uploads/2025/03/S3Ktech-Logo.png", use_column_width=False)
+st.markdown("<div class='main-title'>📋 Clinical Protocol Generator</div>", unsafe_allow_html=True)
 
 if "articles" not in st.session_state or st.session_state.articles is None:
     st.warning("⚠ Please process articles in the Evidence Analysis page first.")
@@ -242,9 +301,9 @@ if "articles" not in st.session_state or st.session_state.articles is None:
 
 articles = st.session_state.articles
 
-# Generate Introduction
+# --- Generate Introduction if not already done ---
 if "protocol_intro" not in st.session_state:
-    with st.spinner("Generating Clinical Trial Protocol Introduction..."):
+    with st.spinner("🔄 Generating Protocol Introduction..."):
         st.session_state.protocol_intro = answer_user_query("""
         Generate the Introduction section for a Clinical Trial Protocol in ICH M11 format with these subheadings:
         1. Background and Rationale
@@ -253,7 +312,7 @@ if "protocol_intro" not in st.session_state:
         4. Justification for Investigating Study Drug
         """, articles, "")
 
-# 📄 Clinical Trial Protocol Tab
+# --- Generate Clinical Protocol ---
 def get_protocol_preview(doc):
     preview = []
     for para in doc.paragraphs:
@@ -261,38 +320,11 @@ def get_protocol_preview(doc):
             preview.append(para.text)
     return "\n".join(preview)
 
-st.markdown("""
-    <style>
-    .protocol-preview-card {
-        background: #f8f9fa;
-        border-radius: 10px;
-        border: 1px solid #e9ecef;
-        padding: 24px 18px 18px 18px;
-        margin-bottom: 24px;
-        font-family: 'Segoe UI', 'Arial', sans-serif;
-        font-size: 1.08rem;
-        color: #222;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        line-height: 1.7;
-        max-height: 400px;
-        overflow-y: auto;
-    }
-    .protocol-preview-title {
-        font-size: 1.15rem;
-        font-weight: 600;
-        color: #b22222;
-        margin-bottom: 10px;
-        letter-spacing: 0.5px;
-    }
-    </style>
-""", unsafe_allow_html=True)
+st.markdown("<div class='section-title'>📄 Full Clinical Protocol Document</div>", unsafe_allow_html=True)
 
-st.markdown("<span style='font-size:1.2rem;font-weight:600;'>📄 Full Clinical Protocol Document</span>", unsafe_allow_html=True)
+if st.button("Generate Full Protocol Document"):
+    with st.spinner("🛠 Generating full protocol document..."):
 
-if st.button("Generate Full Clinical Protocol Document"):
-    with st.spinner("Generating full protocol..."):
-
-        # Generate 100-word per-article summaries
         per_article_summaries = []
         for i, art in enumerate(articles, 1):
             summary = answer_user_query(
@@ -303,7 +335,7 @@ if st.button("Generate Full Clinical Protocol Document"):
             )
             per_article_summaries.append(f"📝 Article {i}:\n{summary.strip()}")
 
-        # Create DOCX
+        # Create the DOCX document
         doc = Document()
         title = doc.add_heading('Clinical Protocol', 0)
         title.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -327,18 +359,16 @@ if st.button("Generate Full Clinical Protocol Document"):
             ref.add_run(f"{art.get('title', 'No title')} ").bold = True
             ref.add_run(f"({art.get('authors', 'No authors')}, {art.get('year', 'No year')})")
 
-        # Save to buffer
         buffer = io.BytesIO()
         doc.save(buffer)
         buffer.seek(0)
         b64 = base64.b64encode(buffer.read()).decode()
         href = f'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,{b64}'
 
-        # Preview
+        # Preview Section
         preview_text = get_protocol_preview(doc)
-        st.markdown("<div class='protocol-preview-title'>Preview</div>", unsafe_allow_html=True)
-        st.markdown(f"<div class='protocol-preview-card'>{preview_text.replace(chr(10), '<br>')}</div>", unsafe_allow_html=True)
+        st.markdown("<div class='section-title'>👀 Preview</div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='preview-box'>{preview_text.replace(chr(10), '<br>')}</div>", unsafe_allow_html=True)
 
-        # Download link
-        st.markdown(f'<a href="{href}" download="clinical_protocol.docx"><b>📥 Download Clinical Protocol</b></a>', unsafe_allow_html=True)
-
+        # Download Link
+        st.markdown(f'<a href="{href}" download="clinical_protocol.docx" class="download-link">📥 Download Clinical Protocol</a>', unsafe_allow_html=True)
