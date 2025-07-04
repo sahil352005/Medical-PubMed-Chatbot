@@ -273,10 +273,6 @@ st.markdown("""
         border: none;
         box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
     }
-    .stButton>button:hover {
-        background-color: #1d4ed8;
-        transition: 0.3s ease-in-out;
-    }
     .download-link {
         font-weight: 600;
         color: #2563eb;
