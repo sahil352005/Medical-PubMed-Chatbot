@@ -242,7 +242,7 @@ st.markdown("""
         text-align: center;
         font-size: 2.2rem;
         font-weight: 700;
-        color: #14375a;
+        color: black;
         margin-bottom: 10px;
     }
     .section-title {
