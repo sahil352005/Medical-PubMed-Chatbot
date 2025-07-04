@@ -292,7 +292,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Page Elements ---
-st.image("https://s3ktech.ai/wp-content/uploads/2025/03/S3Ktech-Logo.png", use_column_width=False)
+st.image("https://s3ktech.ai/wp-content/uploads/2025/03/S3Ktech-Logo.png", width=True)
 st.markdown("<div class='main-title'>📋 Clinical Protocol Generator</div>", unsafe_allow_html=True)
 
 if "articles" not in st.session_state or st.session_state.articles is None:
