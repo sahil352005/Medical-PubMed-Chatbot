@@ -12,32 +12,52 @@ st.title("🩺 Medical Research Article Summaries & Regulatory Content Generatio
 
 st.markdown("""
 
-This tool helps you analyze medical research articles from PubMed in a structured way. Follow these steps:
+This tool helps you analyze medical research articles from PubMed in a structured way.
 
-### Step 1: Search on PubMed
+---
+### How to Use
+
+#### Option 1: Manual Upload
 1. Go to [PubMed](https://pubmed.ncbi.nlm.nih.gov/)
-2. Perform your search
-3. Save the results as a text file (use the 'Save' button on PubMed)
+2. Perform your search and save the results as a text file (use the 'Save' button)
+3. Go to the **"Article Summaries"** page
+4. Upload your saved results and click **Process Articles**
+---
 
-### Step 2: Upload and Process
-1. Go to the "Article Summaries" page
-2. Upload your saved PubMed results
-3. Click "Process Articles" to analyze the content
+#### Option 2: Direct Search (Recommended)
+- Go to the **"PubMed Search & Summary"** page in the sidebar.
+- Enter your search query.
+- Apply filters (year, article type, language, etc.) as needed.
+- Click **Search and Summarize** to instantly get:
+    - Evidence summaries
+    - Metadata tables
+    - Comparative analyses
+    - Clinical conclusions
+---
 
-### Step 3: Explore the Results
-The tool will generate:
-- Overall evidence summary
-- Metadata table
-- Comparative analysis
-- Clinical conclusions
+### Explore the Results
 
-### Step 4: Generate Regulatory Content
-The "Regulatory Content Generation" page provides:
+- The tool will generate:
+    - Overall evidence summary
+    - Metadata table
+    - Comparative analysis
+    - Clinical conclusions
+
+---
+
+### Generate Regulatory Content
+
+The **"Regulatory Content Generation"** page provides:
 - Clinical Trial Protocol Introduction (ICH M11 format)
 - Clinical Study Report Discussion (TransCelerate format)
 
+---
+
 ## Getting Started
-Click on "Article Summaries" in the sidebar to begin!
+
+- For the fastest experience, use **"PubMed Search & Summary"** in the sidebar.
+- Or use **"Article Summaries"** for manual upload.
+
 """)
 
 # Add some styling
